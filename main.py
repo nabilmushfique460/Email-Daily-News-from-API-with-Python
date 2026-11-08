@@ -15,12 +15,14 @@ request = requests.get(url)
 content = request.json()
 
 # Access the article title and description
-body_content = ""
+body_content_list = []
 for article in content["articles"][:20]:
     if article["title"] is not None and article["description"] is not None:
-        body_content += (article["title"] + "\n"
-                         + article["description"] + "\n"
-                         + article["url"] + 2*"\n")
+        # ⚡ Bolt: Optimizing string concatenation using list append and f-strings
+        # instead of the += operator which creates new strings in each iteration
+        body_content_list.append(f"{article['title']}\n{article['description']}\n{article['url']}\n\n")
+
+body_content = "".join(body_content_list)
 
 message = f"""Subject: Today's News
 
