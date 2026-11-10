@@ -1,0 +1,3 @@
+## 2024-03-20 - Prevent Overfetching News API Data
+**Learning:** By default, NewsAPI's `/v2/everything` endpoint returns up to 100 articles, which is a massive payload. If the application only processes a subset (like 20 articles), it causes unnecessary network transfer time, memory allocation, and JSON parsing overhead. The application previously fetched 100 articles and truncated to 20 client-side.
+**Action:** Always utilize the `pageSize` query parameter for external APIs when only a subset of data is needed, especially for NewsAPI where payloads can be extremely large. Ensure `pageSize` matches the expected client processing limit.
