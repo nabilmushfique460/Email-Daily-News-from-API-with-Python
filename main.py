@@ -15,12 +15,14 @@ request = requests.get(url)
 content = request.json()
 
 # Access the article title and description
-body_content = ""
-for article in content["articles"][:20]:
-    if article["title"] is not None and article["description"] is not None:
-        body_content += (article["title"] + "\n"
-                         + article["description"] + "\n"
-                         + article["url"] + 2*"\n")
+# ⚡ Bolt Optimization: Use list comprehension and ''.join() instead of += for O(n) string building
+# Impact: Prevents memory reallocation overhead, creating a faster and more memory-efficient string build
+articles_content = [
+    article["title"] + "\n" + article["description"] + "\n" + article["url"] + "\n\n"
+    for article in content.get("articles", [])[:20]
+    if article.get("title") is not None and article.get("description") is not None
+]
+body_content = "".join(articles_content)
 
 message = f"""Subject: Today's News
 
